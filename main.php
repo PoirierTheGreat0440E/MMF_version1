@@ -23,6 +23,34 @@
 				// On vérifie si une image a été sélectionnée.
 				if (!empty($_FILES["articleImage"]["name"])){
 					afficher_remarque("Une image a été sélectionnée.");
+					$nom = $_FILES["articleImage"]["name"];
+					$format = $_FILES["articleImage"]["type"];
+					$taille = $_FILES["articleImage"]["size"];
+					afficher_remarque("Taille du fichier : $taille octets");
+					$formats_acceptes = array("image/jpeg","image/gif","image/png");
+					$validation1 = false;
+					$validation2 = false;
+					// On vérifie le fichier envoyé par le formulaire...
+					// étape 1 : On vérifie le format du fichier et sa taille
+					if ( in_array($format, $formats_acceptes) ){
+						afficher_remarque("Le format est accepté.");
+						$validation1 = true;
+					} else {
+						afficher_erreur("Le format est refusé.");
+					}
+					// étape 2 : On vérifie ensuite la taille du fichier...
+					if ( $taille < 20930 ){
+						afficher_remarque("La taille du fichier est acceptée.");
+						$validation2 = true;
+					} else {
+						afficher_erreur("La taille du fichier est refusé.");
+					}
+					// Si les deux vérifications sont réussies, on enregistre une copie
+					// du fichier envoyé.
+					if ( $validation1 and $validation2 ){
+						copy($_FILES["articleImage"]["tmp_name"],"C:/wamp64/www/MMF_version1/uploads/$nom");
+						afficher_remarque("Le fichier a été upload avec succès !");
+					}
 				} else {
 					afficher_remarque("Aucune image sélectionnée.");
 				}
