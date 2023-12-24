@@ -1,0 +1,47 @@
+.creationArticle{
+    border:1px black solid;
+    padding:8px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    width:70%;
+    margin:auto;
+}
+
+#titreArticle{
+    font-size:20px;
+}
+
+#creationArticleBoutonPoste{
+    font-size:30px;
+    padding:5px;
+    border-radius:5px;
+    border:none;
+    background-color:rgb(220, 134, 213);
+}
+
+.champ_de_texte1{
+    resize:none;
+    font-size:20px;
+    height:500px;
+}
+
+.creationArticle_details_communs{
+    border-radius:4px;
+    border:2px black solid;
+    margin:5px;
+    padding:5px;
+}
+
+.largeur_proportion_70{
+    width:70%;
+}
+
+.largeur_proportion_60{
+    width:60%;
+}
+
+.creation_article_police{
+    font-size:20px;
+    font-family: Helvetica, "Trebuchet MS", Verdana, sans-serif;
+}
