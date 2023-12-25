@@ -75,7 +75,13 @@
 	<!-- Formulaire de création pour concevoir un article -->
 	<form action="#" method="POST" class="creationArticle" enctype="multipart/form-data">
 
-		<?php validation_article_saisi(); ?>
+		<?php 
+
+			if (isset($_POST["poster_article"])){
+				validation_article_saisi();
+			}
+
+		 ?>
 		
 		<!-- Insertion d'un titre pour l'article -->
 		<span for="titreArticle" class="creation_article_police"><b>Etape #1 :</b> Ecrire le titre de l'article :</span>
@@ -89,7 +95,7 @@
 		<span for="contenuArticle" class="creation_article_police"><b>Etape #2 :</b> Ecrire le contenu de l'article :</span>
 		<textarea name="articleContenu" class="largeur_proportion_60 creationArticle_details_communs champ_de_texte1" id="contenuArticle"></textarea>
 
-		<input type="submit" value="Poster l'article" id="creationArticleBoutonPoste"/>
+		<input type="submit" name="poster_article" value="Poster l'article" id="creationArticleBoutonPoste"/>
 	</form>
 
 	</main>
