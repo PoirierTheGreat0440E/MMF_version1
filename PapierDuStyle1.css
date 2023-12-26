@@ -45,3 +45,14 @@
     font-size:20px;
     font-family: Helvetica, "Trebuchet MS", Verdana, sans-serif;
 }
+
+.liste_articles{
+    width:50%;
+    margin:0 auto;
+    background-color:rgba(0,0,0,0.2);
+}
+
+.articles{
+    border:1px black solid;margin:4px;padding:4px;width:80%;margin:0 auto;font-family:Arial Narrow;display:flex;flex-direction:column;margin-bottom:10px;
+    background-color:white;
+}
