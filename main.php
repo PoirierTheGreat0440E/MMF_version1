@@ -83,50 +83,39 @@
 		}
 	}
 
-	function validation_article_saisi() {
+	function validation_article_saisi($titre,$image,$contenu) {
 		// On vérifie d'abord si le titre et le contenu ont bien été saisis.
-		if (empty($_POST["articleTitre"]) or empty($_POST["articleContenu"])){
+		if (empty($titre) or empty($contenu)){
 			afficher_erreur("Titre et/ou contenu vide(s).");
+			return null;
 		} else {
 			// Dans le cas où les deux informations précédentes sont présentes, on
 			// vérifie si le contenu est d'une longueur autorisée.
-			$longueur = strlen($_POST["articleContenu"]);
+			$longueur = strlen($contenu);
 			if ( $longueur > 10000 ){
 				afficher_erreur("La longueur maximale est dépassée.");
+				return null;
 			} else {
 				// On vérifie si une image a été sélectionnée.
-				if (!empty($_FILES["articleImage"]["name"])){
+				if (!empty($image["name"])){
 					afficher_remarque("Une image a été sélectionnée.");
-					$nom = $_FILES["articleImage"]["name"];
-					$format = $_FILES["articleImage"]["type"];
-					$taille = $_FILES["articleImage"]["size"];
+					$nom = $image["name"];
+					$format = $image["type"];
+					$taille = $image["size"];
 					afficher_remarque("Taille du fichier : $taille octets");
 					$formats_acceptes = array("image/jpeg","image/gif","image/png");
-					$validation1 = false;
-					$validation2 = false;
 					// On vérifie le fichier envoyé par le formulaire...
 					// étape 1 : On vérifie le format du fichier et sa taille
-					if ( in_array($format, $formats_acceptes) ){
-						afficher_remarque("Le format est accepté.");
-						$validation1 = true;
-					} else {
-						afficher_erreur("Le format est refusé.");
-					}
-					// étape 2 : On vérifie ensuite la taille du fichier...
-					if ( $taille < 1000000 ){
-						afficher_remarque("La taille du fichier est acceptée.");
-						$validation2 = true;
-					} else {
-						afficher_erreur("La taille du fichier est refusé.");
-					}
-					// Si les deux vérifications sont réussies, on enregistre une copie
-					// du fichier envoyé.
-					if ( $validation1 and $validation2 ){
+					if ( (in_array($format, $formats_acceptes)) and ($taille < 1000000)  ){
 						copy($_FILES["articleImage"]["tmp_name"],"C:/wamp64/www/MMF_version1/uploads/$nom");
-						afficher_remarque("Le fichier a été upload avec succès !");
+						afficher_remarque("Le fichier rempli les critères !");	
+						return 1;
+					} else {
+						afficher_erreur("Le fichier selectionné n'est pas au bon format et/ou est d'une taille supérieure à 1000000 d'octets.");
+						return null;
 					}
-				}else {
-					afficher_remarque("Aucune image sélectionnée.");
+				} else {
+					return 1;
 				}
 			}
 		}
@@ -142,10 +131,16 @@
 
 	$array_connection = connexion_base_de_donnees("mmf_ver1");
 	$preparation = preparation_requete_insertion($array_connection);
-	executer_requete_insertion($preparation,"Antoine","ImageDeOuf","Contenu super intéressant");
 
 
 	if (isset($_POST["poster_article"])){
+		$validation = validation_article_saisi($_POST["articleTitre"],$_FILES["articleImage"],$_POST["articleContenu"]);
+		if ( $validation == 1 ){
+			executer_requete_insertion($preparation,$_POST["articleTitre"],"C:/wamp64/www/MMF_version1/uploads/".$_FILES['articleImage']['name'],$_POST["articleContenu"]);
+			afficher_remarque("L'article a été posté !");
+		} else {
+			afficher_erreur("L'article n'est pas valide !");
+		}
 	}
 
 ?>
