@@ -106,7 +106,7 @@
 					$formats_acceptes = array("image/jpeg","image/gif","image/png");
 					// On vérifie le fichier envoyé par le formulaire...
 					// étape 1 : On vérifie le format du fichier et sa taille
-					if ( (in_array($format, $formats_acceptes)) and ($taille < 1000000)  ){
+					if ( (in_array($format, $formats_acceptes)) and ($taille < 10000000)  ){
 						copy($_FILES["articleImage"]["tmp_name"],"C:/wamp64/www/MMF_version1/uploads/$nom");
 						afficher_remarque("Le fichier rempli les critères !");	
 						return 1;
