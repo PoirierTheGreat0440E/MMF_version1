@@ -136,7 +136,7 @@
 	if (isset($_POST["poster_article"])){
 		$validation = validation_article_saisi($_POST["articleTitre"],$_FILES["articleImage"],$_POST["articleContenu"]);
 		if ( $validation == 1 ){
-			executer_requete_insertion($preparation,$_POST["articleTitre"],"C:/wamp64/www/MMF_version1/uploads/".$_FILES['articleImage']['name'],$_POST["articleContenu"]);
+			executer_requete_insertion($preparation,$_POST["articleTitre"],"uploads/".$_FILES['articleImage']['name'],$_POST["articleContenu"]);
 			afficher_remarque("L'article a été posté !");
 		} else {
 			afficher_erreur("L'article n'est pas valide !");
