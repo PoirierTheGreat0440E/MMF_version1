@@ -5,7 +5,7 @@
 		<title>MMF / Liste des articles</title>
 		<meta charset="utf-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" type="text/css" href="PapierDuStyle1.css">
+		<link rel="stylesheet" href="PapierDuStyle1.css">
 	</head>
 
 	<?php
@@ -76,7 +76,7 @@
 			<p style="border:1px blue dotted;margin:5px;padding:4px;width:20%;display:flex;justify-content:center;font-size:20px;font-family:Arial Narrow;">About us</p>
 			<p style="border:1px blue dotted;margin:5px;padding:4px;width:20%;display:flex;justify-content:center;font-size:20px;font-family:Arial Narrow;">Articles</p>
 			<p style="border:1px blue dotted;margin:5px;padding:4px;width:20%;display:flex;justify-content:center;font-size:20px;font-family:Arial Narrow;">Appointments</p>
-			<p style="border:1px blue dotted;margin:5px;padding:4px;width:20%;display:flex;justify-content:center;font-size:20px;font-family:Arial Narrow;">Contact informations</p>
+			<p style="border:1px blue dotted;margin:5px;padding:4px;width:20%;display:flex;justify-content:center;font-size:20px;font-family:Arial Narrow; ">Contact informations</p>
 		</nav>	
 
 		<div class="liste_articles">
