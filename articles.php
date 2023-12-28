@@ -5,7 +5,7 @@
 		<title>MMF / Liste des articles</title>
 		<meta charset="utf-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" href="PapierDuStyle1.css">
+		<link rel="stylesheet" href="style_articles.css">
 	</head>
 
 	<?php
@@ -54,12 +54,13 @@
 			echo("<div style='font-family:Arial Narrow;border-radius:4px;border:1px black solid;background-color:rgb(30,30,160);color:white;padding:3px;margin:3px;font-size:17px;width:30%;'><p style='margin:0 auto;'><b>INFO : </b>$message</p></div>");
 		} 
 
-		function afficher_article($titre,$image,$contenu){
+		function afficher_article($titre,$image,$contenu,$id){
 			echo("<div class='articles'>
 				<b style='font-size:20px;'>$titre</b><br/>
 				<div style='width:100%; background-color:black;display:flex;flex-direction:row;justify-content:center;'>
 				<img src=$image style='border:1px black dotted;width:80%;'></img>
 				</div>
+				<a href='article_focus.php?id=$id'><p class='bouton_commentaire'>Commenter</p></a>
 				<i>$image</i>
 				<p>$contenu</p>
 				</div>");
@@ -72,11 +73,10 @@
 
 	<body>
 
-		<nav id="barre_navigation" style="display:flex;flex-direction: row;justify-content: space-between;align-items: center;border:1px black dotted;">
-			<p style="border:1px blue dotted;margin:5px;padding:4px;width:20%;display:flex;justify-content:center;font-size:20px;font-family:Arial Narrow;">About us</p>
-			<p style="border:1px blue dotted;margin:5px;padding:4px;width:20%;display:flex;justify-content:center;font-size:20px;font-family:Arial Narrow;">Articles</p>
-			<p style="border:1px blue dotted;margin:5px;padding:4px;width:20%;display:flex;justify-content:center;font-size:20px;font-family:Arial Narrow;">Appointments</p>
-			<p style="border:1px blue dotted;margin:5px;padding:4px;width:20%;display:flex;justify-content:center;font-size:20px;font-family:Arial Narrow; ">Contact informations</p>
+		<nav id="barreNavigation">
+			<a href="presentation.php"><p>Home Page</p></a>
+			<a href="articles.php"><p>Articles/Forum</p></a>
+			<a href="#"><p>Users</p></a>
 		</nav>	
 
 		<div class="liste_articles">
@@ -85,7 +85,7 @@
 			//afficher_article("Quelque chose d'important vient de se dérouler.","uploads/wow.jpg","Aujourd'hui nous avons mangé énormément de nourritures.");
 		 	//afficher_article("Bonjour mdr","aaa","Prout Prout");
 		 	while ($curseur = mysqli_fetch_assoc($lecture)){
-				afficher_article($curseur["article_titre"],$curseur["article_image"],$curseur["article_contenu"]);
+				afficher_article($curseur["article_titre"],$curseur["article_image"],$curseur["article_contenu"],$curseur["article_id"]);
 			}
 		 	?>
 
