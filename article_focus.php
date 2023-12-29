@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html>
 
+<head>
+	<title>MMF / Article FOCUS</title>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="article_focus.css">
+</head>
+
 <?php
 
 		// function pour se connecter à phpMyAdmin et se connecter à une base de données.
@@ -40,26 +47,64 @@
 			}
 		}
 
+		function afficher_article_focus($titre,$image,$contenu){
+			echo("<div class='articles'>
+				<b style='font-size:20px;'>$titre</b><br/>
+				<div style='width:100%; background-color:black;display:flex;flex-direction:row;justify-content:center;'>
+				<img src=$image style='border:1px black dotted;width:80%;'></img>
+				</div>
+				<i>$image</i>
+				<p>$contenu</p>
+				</div>");
+		}
+
 		if (isset($_GET["id"])){
 			$array_connection = connexion_base_de_donnees("mmf_ver1");
 			$lecture = lecture_article_focus($array_connection[0],$_GET["id"]);
-			while($curseur = mysqli_fetch_assoc($lecture)){
-				echo($curseur["article_titre"]);
-			}
 		} else {
 			echo("Aucune id détectée.");
 		}
 
 ?>
 
-<head>
-	<title>MMF / Article FOCUS</title>
-	<meta charset="utf-8"/>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="style_article_focus.css">
-</head>
-
 <body>
+
+	<nav id="barreNavigation">
+			<a href="presentation.php"><p>Home Page</p></a>
+			<a href="articles.php"><p>Articles/Forum</p></a>
+			<a href="#"><p>Users</p></a>
+	</nav>	
+
+<div class="liste_articles">
+			
+			<?php
+
+			while($curseur = mysqli_fetch_assoc($lecture)){
+				afficher_article_focus($curseur["article_titre"],$curseur["article_image"],$curseur["article_contenu"]);
+			}
+
+		 	?>
+
+</div>
+
+<div id="zoneCommentaireForm">
+
+	<p>Envoyez un commentaire :</p>
+
+	<?php echo("<form id='CommentaireFormulaire' method='GET' action='article_focus.php'>"); ?>
+
+	<form id="CommentaireFormulaire" action="article_focus.php?id=">
+
+		<?php echo(" <input type='hidden' value='".$_GET["id"]."' name='id'/> "); ?>
+
+		<textarea name="commentaireContenu" id="commentaireContenu">
+		</textarea>
+
+		<input type="submit" name="commentaireEnvoi" value="Envoyer" id="commentaireBoutonEnvoi"/>
+
+	</form>
+
+</div>
 	
 </body>
 

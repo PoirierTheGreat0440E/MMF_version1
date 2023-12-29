@@ -1,0 +1,117 @@
+a:link{
+    color:black;
+    text-decoration:none;
+}
+
+a:visited{
+    color:black;
+    text-decoration:none;
+}
+
+.liste_articles{
+    width:50%;
+    margin:0 auto;
+    background-color:rgba(0,0,0,0.2);
+}
+
+.articles{
+    border:1px black solid;
+    margin:4px;
+    padding:4px;
+    width:80%;
+    margin:0 auto;
+    font-family:Arial Narrow;
+    display:flex;
+    flex-direction:column;
+    margin-bottom:10px;
+    background-color:white;
+}
+
+#barreNavigation{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    width:80%;
+    border:1px black dotted;
+    height:40px;
+    margin:0 auto;
+}
+
+#barreNavigation p{
+    margin-right:1.6vw;
+    font-size:20px;
+    padding:2px;
+    border:1px black solid;
+}
+
+#barreNavigation p:hover{
+    margin-right:1.6vw;
+    font-size:20px;
+    padding:2px;
+    border:1px black solid;
+    background-color:rgb(210,210,210);
+}
+
+#zoneCommentaireForm{
+    margin:0 auto;
+    background-color:rgb(30, 55, 153);
+    padding:4px;
+    width:50%;
+    display:flex;
+    flex-direction:column;
+    font-size:20px;
+    font-family:Helvetica, "Trebuchet MS", Verdana, sans-serif;;
+    color:white;
+}
+
+#CommentaireFormulaire{
+    border:1px black solid;
+    padding:4px;
+    display:flex;
+    flex-direction: column;
+}
+
+#commentaireContenu{
+    resize:none;
+    width:90%;
+    height:90px;
+    font-size:20px;
+    margin:0 auto;
+}
+
+#commentaireBoutonEnvoi{
+    width:50%;
+    font-size:20px;
+    margin:0 auto;
+    margin-top:5px;
+    background-color:rgb(236, 240, 241);
+}
+
+#commentaireBoutonEnvoi:hover{
+    width:50%;
+    font-size:20px;
+    margin:0 auto;
+    margin-top:5px;
+    background-color:rgb(189, 195, 199);
+}
+
+@media screen and (max-width:800px){
+
+    .liste_articles{
+        width:90%;
+        margin:0 auto;
+        background-color:rgba(0,0,0,0.2);
+    }
+
+    #zoneCommentaireForm{
+    margin:0 auto;
+    border:1px black solid;
+    background-color:rgb(30, 55, 153);
+    padding:4px;
+    width:90%;
+    display:flex;
+    flex-direction:column;
+    }
+
+}
