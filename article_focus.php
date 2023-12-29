@@ -47,6 +47,33 @@
 			}
 		}
 
+	function preparation_requete_insertion_commentaire($connection_bdd){
+		$insertion = "INSERT INTO mmf_ver1_commentaires(commentaire_contenu,id_article) VALUES (?,?);";
+		$requete1 = mysqli_prepare($connection_bdd[0],$insertion);
+		if (!$requete1){
+			//afficher_erreur("Preparation de la requête d'insertion échouée.");
+			return null;
+		} else {
+			//afficher_remarque("Preparation de la requête d'insertion réussie.");
+		}
+		return $requete1;
+	}
+
+	function executer_requete_insertion_commentaire($preparation,$contenu,$id_article){
+		$test1 = mysqli_stmt_bind_param($preparation,"ss",$contenu,$id_article);
+		if ( !$test1 ){
+			//afficher_erreur("Liaison des paramètres échouée.");
+		} else {
+			//afficher_remarque("Liaison des paramètres réussie.");
+			$execution = mysqli_stmt_execute($preparation);
+			if ( !$execution ){
+				//afficher_erreur("Execution de la requête préparée d'insertion échouée.");
+			} else {
+				//afficher_remarque("Execution de la requête préparée d'insertion réussie.");
+			}
+		}
+	}
+
 		function afficher_article_focus($titre,$image,$contenu){
 			echo("<div class='articles'>
 				<b style='font-size:20px;'>$titre</b><br/>
@@ -58,12 +85,22 @@
 				</div>");
 		}
 
-		if (isset($_GET["id"])){
-			$array_connection = connexion_base_de_donnees("mmf_ver1");
+		$array_connection = connexion_base_de_donnees("mmf_ver1");
+
+		
+		if ( isset($_GET["id"]) ){
+			echo($_GET["id"]);
 			$lecture = lecture_article_focus($array_connection[0],$_GET["id"]);
 		} else {
-			echo("Aucune id détectée.");
+			if ( isset($_POST["id"]) ){
+				$preparation2 = preparation_requete_insertion_commentaire($array_connection);
+				executer_requete_insertion_commentaire($preparation2,$_POST["commentaireContenu"],$_POST["id"]);
+				$lecture = lecture_article_focus($array_connection[0],$_POST["id"]);
+			} else {
+				echo("Aucune id détectée.");
+			}
 		}
+		
 
 ?>
 
@@ -85,24 +122,40 @@
 
 		 	?>
 
-</div>
+	<div id="zoneCommentaireForm">
 
-<div id="zoneCommentaireForm">
+		<p>Envoyez un commentaire :</p>
 
-	<p>Envoyez un commentaire :</p>
+		<?php echo("<form id='CommentaireFormulaire' method='POST' action='article_focus.php'>"); ?>
 
-	<?php echo("<form id='CommentaireFormulaire' method='GET' action='article_focus.php'>"); ?>
+		<form id="CommentaireFormulaire" action="article_focus.php?id=">
 
-	<form id="CommentaireFormulaire" action="article_focus.php?id=">
+			<?php 
 
-		<?php echo(" <input type='hidden' value='".$_GET["id"]."' name='id'/> "); ?>
+			if ( isset($_GET["id"]) ){
+				echo(" <input type='hidden' value='".$_GET["id"]."' name='id'/> ");
+			} elseif ( isset($_POST["id"]) ){
+				echo(" <input type='hidden' value='".$_POST["id"]."' name='id'/> ");
+			}
+ 
 
-		<textarea name="commentaireContenu" id="commentaireContenu">
-		</textarea>
+			?>
 
-		<input type="submit" name="commentaireEnvoi" value="Envoyer" id="commentaireBoutonEnvoi"/>
+			<textarea name="commentaireContenu" id="commentaireContenu"></textarea>
 
-	</form>
+			<input type="submit" name="commentaireEnvoi" value="Envoyer" id="commentaireBoutonEnvoi"/>
+
+		</form>
+
+	</div>
+
+	<article class='articles'>
+		<p>Premier commentaire</p>
+	</article>
+
+	<article class='articles'>
+		<p>Second commentaire</p>
+	</article>
 
 </div>
 	
