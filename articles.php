@@ -76,7 +76,9 @@
 		<nav id="barreNavigation">
 			<a href="presentation.php"><p>Home Page</p></a>
 			<a href="articles.php"><p>Articles/Forum</p></a>
-			<a href="#"><p>Users</p></a>
+			<a href="utilisateurs.php"><p>Users</p></a>
+			<a href="enregistrement.php"><p>Register</p></a>
+			<a href="connexion.php"><p>Log in</p></a>
 		</nav>	
 
 		<div class="liste_articles">

@@ -16,17 +16,17 @@ function connexion_base_de_donnees(string $nom_bdd, string $nom_hote = "localhos
 	// On essaye d'abord de se connecter à phpMyAdmin...
 	$etape1 = mysqli_connect($nom_hote,$nom_utilisateur,$mot_de_passe);
 	if ( $etape1 ){
-		afficher_remarque("Connection à phpMyAdmin réussie.");
+		//afficher_remarque("Connection à phpMyAdmin réussie.");
 	} else {
-		afficher_erreur("Connection à phpMyAdmin échouée.");
+		//afficher_erreur("Connection à phpMyAdmin échouée.");
 		return null;
 	}
 	// On essaye de rejoindre la base de données donnée en paramètre...
 	$etape2 = mysqli_select_db($etape1,$nom_bdd);
 	if ( $etape2 ){
-		afficher_remarque("Accès à la base de données réussie.");
+		//afficher_remarque("Accès à la base de données réussie.");
 	} else {
-		afficher_erreur("Accès à la base de données échouée.");
+		//afficher_erreur("Accès à la base de données échouée.");
 		return null;
 	}
 	// Si les deux étapes ont été réalisées avec succès, on crée un array contenant toutes les étapes.
@@ -71,10 +71,10 @@ function preparation_requete_insertion($connection_bdd){
 	$insertion = "INSERT INTO mmf_ver1_utilisateurs(utilisateur_nom,utilisateur_mot_de_passe,utilisateur_photo_de_profile,utilisateur_description,utilisateur_categorie) VALUES (?,?,?,?,?);";
 	$requete1 = mysqli_prepare($connection_bdd[0],$insertion);
 	if (!$requete1){
-		afficher_erreur("Preparation de la requête d'insertion échouée.");
+		//afficher_erreur("Preparation de la requête d'insertion échouée.");
 		return null;
 	} else {
-		afficher_remarque("Preparation de la requête d'insertion réussie.");
+		//afficher_remarque("Preparation de la requête d'insertion réussie.");
 	}
 	return $requete1;
 }
@@ -95,19 +95,19 @@ function validation_enregistrement($connection_bdd,$execution,$utilisateurNom,$u
 		// On valide d'abord les mots de passe : ils doivent être identiques.
 		$test1 = verification_mot_de_passe($utilisateurMotDePasse,$utilisateurMotDePasseConfirmation);
 		if (!$test1){
-			afficher_erreur("Les mots de passe saisis ne sont pas identiques.");
+			//afficher_erreur("Les mots de passe saisis ne sont pas identiques.");
 			return false;
 		}
 		// On valide ensuite la photo de profile : elle doit respecter les formats et être de taille autorisée.
 		$test2 = verification_photo_de_profile($utilisateurPhotoDeProfile);
 		if (!$test2){
-			afficher_erreur("La photo de profile est trop grande et/ou possède un format interdit.");
+			//afficher_erreur("La photo de profile est trop grande et/ou possède un format interdit.");
 			return false;
 		}
 		// On valide le nom d'utilisateur : on vérifie s'il n'existe pas dékà un utilisateur portant le nom saisi.
 		$test3 = verification_nom_utilisateur($connection_bdd,$utilisateurNom);
 		if (!$test3){
-			afficher_erreur("Le nom d'utilisateur est déjà utilisé.");
+			//afficher_erreur("Le nom d'utilisateur est déjà utilisé.");
 			return false;
 		}
 		// On valide la description : elle ne doit pas dépasser les 2000 caractères de longueur.
@@ -117,7 +117,7 @@ function validation_enregistrement($connection_bdd,$execution,$utilisateurNom,$u
 		// Fin de la vérification
 		return true;
 	} else {
-		afficher_erreur('le paramètre $execution n\'est pas donné.');
+		//afficher_erreur('le paramètre $execution n\'est pas donné.');
 		return false;
 	}
 }
@@ -126,14 +126,14 @@ function executer_requete_insertion($preparation,$utilisateurNom,$utilisateurMot
 	$test1 = null;
 	$test1 = mysqli_stmt_bind_param($preparation,"ssssi",$utilisateurNom,$utilisateurMotDePasse,$utilisateurPhotoDeProfile,$utilisateurDescription,$categorie);
 	if ( !$test1 ){
-		afficher_erreur("Liaison des paramètres échouée.");
+		//afficher_erreur("Liaison des paramètres échouée.");
 	} else {
-		afficher_remarque("Liaison des paramètres réussie.");
+		//afficher_remarque("Liaison des paramètres réussie.");
 		$execution = mysqli_stmt_execute($preparation);
 		if ( !$execution ){
-			afficher_erreur("Execution de la requête préparée d'insertion échouée.");
+			//afficher_erreur("Execution de la requête préparée d'insertion échouée.");
 		} else {
-			afficher_remarque("Execution de la requête préparée d'insertion réussie.");
+			//afficher_remarque("Execution de la requête préparée d'insertion réussie.");
 		}
 	}
 }
@@ -146,13 +146,13 @@ if (isset($_POST["utilisateurNom"])){
 	//$verif1 = verification_nom_utlisateur($connection_array,$_POST["utilisateurNom"]);
 	$verif1 = validation_enregistrement($connection_array,$_POST["utilisateurNom"],$_POST["utilisateurNom"],$_POST["utilisateurMotDePasse"],$_POST["utilisateurMotDePasseConfirmation"],$_FILES["utilisateurPhotoDeProfile"],$_POST["utilisateurDescription"]);
 	if ($verif1){
-		afficher_remarque("Les vérifications sont faites.");
+		//afficher_remarque("Les vérifications sont faites.");
 		$nom = $_POST["utilisateurNom"];
 		$mot_de_passe = $_POST["utilisateurMotDePasse"];
 		$photo_de_profile = $_FILES["utilisateurPhotoDeProfile"]["name"];
 		$description = $_POST["utilisateurDescription"];
 		$categorie = 1;
-		afficher_remarque($photo_de_profile);
+		//afficher_remarque($photo_de_profile);
 		if ( empty($photo_de_profile) ){
 			executer_requete_insertion($preparation,$nom,$mot_de_passe,"profile_pictures/NO_PFP.jpg",$description,$categorie);
 		} else {
@@ -160,14 +160,21 @@ if (isset($_POST["utilisateurNom"])){
 			copy($_FILES["utilisateurPhotoDeProfile"]["tmp_name"],"profile_pictures/".$_FILES["utilisateurPhotoDeProfile"]["name"]);
 		}
 	} else {
-		afficher_erreur("Les vérifications ne sont pas terminées.");
+		//afficher_erreur("Les vérifications ne sont pas terminées.");
 	}
 }
 
 ?>
 
 <body>
-	<p>Enregistrement d'un utilisateur</p>
+
+	<nav id="Navigation">
+		<a href="presentation.php"><p>Home Page</p></a>
+		<a href="articles.php"><p>Articles/Forum</p></a>
+		<a href="utilisateurs.php"><p>Users</p></a>
+		<a href="enregistrement.php"><p>Register</p></a>
+		<a href="connexion.php"><p>Log in</p></a>
+	</nav>
 
 	<form id="formulaire_inscription" action="enregistrement.php" method="POST" enctype="multipart/form-data">
 		<p>Nom d'utilisateur :</p>
