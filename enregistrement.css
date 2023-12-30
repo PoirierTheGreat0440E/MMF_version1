@@ -1,0 +1,38 @@
+body{
+	background-color:gainsboro;
+}
+
+#formulaire_inscription{
+	display:flex;
+	flex-direction:column;
+	margin:0 auto;
+	width:30%;
+	padding:5px;
+	border-radius:5px;
+	border:1px black dotted;
+}
+
+#formulaire_inscription > input{
+	margin-bottom:5px;
+	font-size:16px;
+	font-family:Helvetica, "Trebuchet MS", Verdana, sans-serif;
+}
+
+#formulaire_inscription > p{
+	font-family:Helvetica, "Trebuchet MS", Verdana, sans-serif;
+}
+
+#bouton_enregistrement{
+	margin-top : 15px;
+	background-color:rgb(236, 240, 241);
+}
+
+#bouton_enregistrement:hover{
+	margin-top : 15px;
+	background-color:rgb(189, 195, 199);
+}
+
+#enregistrement_description{
+	resize:none;
+	height:190px;
+}
