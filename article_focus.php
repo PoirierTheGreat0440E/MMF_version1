@@ -47,6 +47,19 @@
 			}
 		}
 
+		// Sous-fonction pour lire les informations de l'article en focus...
+		function lecture_commentaire($connection_bdd,$id_article){
+			$requete = "SELECT * FROM mmf_ver1_commentaires WHERE id_article = $id_article";
+			$test1 = mysqli_query($connection_bdd,$requete);
+			if (!$test1){
+				//afficher_erreur("Requête de lecture des articles échouée.");
+				return null;
+			} else {
+				//afficher_remarque("Requête de lecture des articles réussie.");
+				return $test1;
+			}
+		}
+
 	function preparation_requete_insertion_commentaire($connection_bdd){
 		$insertion = "INSERT INTO mmf_ver1_commentaires(commentaire_contenu,id_article) VALUES (?,?);";
 		$requete1 = mysqli_prepare($connection_bdd[0],$insertion);
@@ -74,6 +87,12 @@
 		}
 	}
 
+	function afficher_commentaire($commentaire_contenu){
+		echo("<article class='articles'><p>$commentaire_contenu</p></article>");
+	}
+
+
+
 		function afficher_article_focus($titre,$image,$contenu){
 			echo("<div class='articles'>
 				<b style='font-size:20px;'>$titre</b><br/>
@@ -91,16 +110,17 @@
 		if ( isset($_GET["id"]) ){
 			echo($_GET["id"]);
 			$lecture = lecture_article_focus($array_connection[0],$_GET["id"]);
+			$commentaires = lecture_commentaire($array_connection[0],$_GET["id"]);
 		} else {
 			if ( isset($_POST["id"]) ){
 				$preparation2 = preparation_requete_insertion_commentaire($array_connection);
 				executer_requete_insertion_commentaire($preparation2,$_POST["commentaireContenu"],$_POST["id"]);
 				$lecture = lecture_article_focus($array_connection[0],$_POST["id"]);
+				$commentaires = lecture_commentaire($array_connection[0],$_POST["id"]);
 			} else {
 				echo("Aucune id détectée.");
 			}
 		}
-		
 
 ?>
 
@@ -150,12 +170,16 @@
 	</div>
 
 	<article class='articles'>
-		<p>Premier commentaire</p>
-	</article>
-
-	<article class='articles'>
 		<p>Second commentaire</p>
 	</article>
+
+	<?php 
+
+	while($curseur_commentaire = mysqli_fetch_assoc($commentaires)){
+		afficher_commentaire($curseur_commentaire["commentaire_contenu"]);
+	}
+
+	?>
 
 </div>
 	
