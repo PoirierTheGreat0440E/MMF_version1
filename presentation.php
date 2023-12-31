@@ -22,7 +22,7 @@ function afficher_image_avec_texte($texte,$image){
 	<p class="presentation1">Test landing page</p>
 	<nav id="menu_navigation">
 		<a href="articles.php"><p>Articles et nouveautés</p></a>
-		<a href="#"><p>Utilisateurs</p></a>
+		<a href="utilisateurs.php"><p>Utilisateurs</p></a>
 	</nav>
 
 	<?php afficher_image_avec_texte("Bonjour tout le monde","montagne.jpg") ?>

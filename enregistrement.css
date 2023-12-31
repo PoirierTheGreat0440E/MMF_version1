@@ -1,0 +1,77 @@
+body{
+	background-color:white;
+}
+
+a:link{
+    color:black;
+    text-decoration:none;
+}
+
+a:visited{
+    color:black;
+    text-decoration:none;
+}
+
+#Navigation{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    width:80%;
+    border:1px black dotted;
+    height:40px;
+    margin:0 auto;
+}
+
+#Navigation p{
+    margin-right:1.6vw;
+    font-size:20px;
+    padding:2px;
+    border:1px black solid;
+}
+
+#Navigation p:hover{
+    margin-right:1.6vw;
+    font-size:20px;
+    padding:2px;
+    border:1px black solid;
+    background-color:rgb(210,210,210);
+}
+
+#formulaire_inscription{
+	background-color:gainsboro;
+	display:flex;
+	flex-direction:column;
+	margin:0 auto;
+	width:30%;
+	padding:5px;
+	border-radius:5px;
+	border:1px grey solid;
+}
+
+#formulaire_inscription > input{
+	margin-bottom:5px;
+	font-size:16px;
+	font-family:Helvetica, "Trebuchet MS", Verdana, sans-serif;
+}
+
+#formulaire_inscription > p{
+	font-family:Helvetica, "Trebuchet MS", Verdana, sans-serif;
+}
+
+#bouton_enregistrement{
+	margin-top : 15px;
+	color:white;
+	background-color:rgb(30, 55, 153);
+}
+
+#bouton_enregistrement:hover{
+	margin-top : 15px;
+	color:white;
+	background-color:rgb(12, 36, 97);
+}
+
+#enregistrement_description{
+	resize:none;
+	height:190px;
+}
