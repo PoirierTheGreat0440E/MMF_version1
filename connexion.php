@@ -10,7 +10,28 @@
 	<link rel="stylesheet" href="connexion.css">
 </head>
 
-<?php 
+<?php
+
+function detection_deconnexion(){
+	if ( !empty($_POST["deconnexion_valeur"]) ){
+		//afficher_remarque($_POST["deconnexion_valeur"]);
+		$_SESSION["connected"] = "NON";
+		$_SESSION["user_id"] = 0;
+	}
+}
+
+function afficher_remarque(string $message){
+		echo("<div style='font-family:Arial Narrow;border-radius:4px;border:1px black solid;background-color:rgb(30,30,160);color:white;padding:3px;margin:3px;font-size:17px;width:30%;'><p style='margin:0 auto;'><b>INFO : </b>$message</p></div>");
+}
+
+function afficher_erreur(string $message){
+		echo("<div style='font-family:Arial Narrow;border-radius:4px;border:1px black solid;background-color:rgb(160,30,30);color:white;padding:3px;margin:3px;font-size:17px;width:30%;'><p style='margin:0 auto;'><b>ERREUR : </b>$message</p></div>");
+}
+
+function afficher_information_session(){
+	afficher_remarque($_SESSION["user_id"]);
+	afficher_remarque($_SESSION["connected"]);
+} 
 
 // function pour se connecter à phpMyAdmin et se connecter à une base de données.
 function connexion_base_de_donnees(string $nom_bdd, string $nom_hote = "localhost", string $nom_utilisateur = "root", string $mot_de_passe = "") :?array {
@@ -36,11 +57,13 @@ function connexion_base_de_donnees(string $nom_bdd, string $nom_hote = "localhos
 }
 
 function preparer_requete_connexion($connection_bdd){
-	$requete = "SELECT utilisateur_mot_de_passe FROM mmf_ver1_utilisateurs WHERE utilisateur_nom = ?";
+	$requete = "SELECT utilisateur_id,utilisateur_mot_de_passe FROM mmf_ver1_utilisateurs WHERE utilisateur_nom = ?";
 	$preparation = mysqli_prepare($connection_bdd[0],$requete);
 	if ( $preparation ){
+		//afficher_remarque("Préparation de la requête réussie.");
 		return $preparation;
 	} else {
+		//afficher_erreur("Préparation de la requête échouée.");
 		return null;
 	}
 }
@@ -51,26 +74,30 @@ function executer_requete_connexion($preparation,$utilisateurNom,$utilisateurMot
 		//echo("Liaison des paramètres échouée !");
 		return 0;
 	} else {
-		$ok =  mysqli_stmt_bind_result($preparation,$mdp_lecture);
+		$ok =  mysqli_stmt_bind_result($preparation,$id_lecture,$mdp_lecture);
 		$resultat = mysqli_stmt_execute($preparation);
 		mysqli_stmt_store_result($preparation);
 		if ( $resultat ){
 			$nombre_ligne = mysqli_stmt_num_rows($preparation);
 			if ( $nombre_ligne > 1 ){
-				//echo("Plus d'un utilisateur est enregistré à ce nom d'utilisateur.");
+				//afficher_erreur("Plus d'un utilisateur est enregistré à ce nom d'utilisateur.");
 				return 3;
 			} elseif ( $nombre_ligne == 0 ){
-				//echo("Aucun utilisateur est enregistré à ce nom d'utilisateur.");
+				//afficher_erreur("Aucun utilisateur est enregistré à ce nom d'utilisateur.");
 				return 3;
 			} else {
-				echo("Un utilisateur est détecté !");
+				//echo("Un utilisateur est détecté !");
 				// On vérifie si le mot de passe est correcte.
 				while(mysqli_stmt_fetch($preparation)){
+					//afficher_remarque($id_lecture);
+					//afficher_remarque($mdp_lecture);
 					if ( $mdp_lecture == $utilisateurMotDePasse ){
-						echo("Les mots de passe sont identiques !");
+						//echo("Les mots de passe sont identiques !");
+						$_SESSION["connected"] = "OUI";
+						$_SESSION["user_id"] = $id_lecture;
 						return 12;
 					} else {
-						echo("Les mots de passe sont différents !");
+						//afficher_erreur("Les mots de passe sont différents !");
 						return 13;
 					}
 				}
@@ -92,10 +119,16 @@ if ( isset($_POST["connexionNomDUtilisateur"]) ){
 	$nom = $_POST["connexionNomDUtilisateur"];
 	$motdepasse = $_POST["connexionMotDePasse"];
 	$resultat = executer_requete_connexion($requete_connexion,$nom,$motdepasse);
-	echo($resultat);
+	if ( $resultat == 12 ){
+		//afficher_remarque("Tous s'est bien passé mdr.");
+	}
 } else {
-	echo(" Donnez un nom d'utilisateur SVP ");
+	//afficher_remarque(" Donnez un nom d'utilisateur SVP ");
 }
+
+detection_deconnexion();
+
+afficher_information_session();
 
 ?>
 
@@ -105,8 +138,12 @@ if ( isset($_POST["connexionNomDUtilisateur"]) ){
 	<a href="presentation.php"><p>Home Page</p></a>
 	<a href="articles.php"><p>Articles/Forum</p></a>
 	<a href="utilisateurs.php"><p>Users</p></a>
+	<?php if ($_SESSION["connected"] == "OUI"): ?>
+		<form method="POST" action="connexion.php"><input type="hidden" name="deconnexion_valeur" value="ActivationDeconnection"/><input type="submit" name="deconnection" value="Log off" id="log_off_button"/></form>
+	<?php else: ?>
 	<a href="enregistrement.php"><p>Register</p></a>
 	<a href="connexion.php"><p>Log in</p></a>
+	<?php endif; ?>
 </nav>
 
 <form method="POST" id="formulaire_connexion" action="connexion.php">

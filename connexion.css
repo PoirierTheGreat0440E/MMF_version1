@@ -70,3 +70,7 @@ a:visited{
     color:white;
     background-color:rgb(12, 36, 97);
 }
+
+#log_off_button{
+    font-size:20px;
+}

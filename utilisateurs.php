@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html>
 
@@ -9,6 +10,12 @@
 </head>
 
 <?php
+
+function detection_deconnexion(){
+	if ( isset($_POST["deconnection"]) ){
+		$_SESSION["connected"] = "NON";
+	}
+}
 
 // function pour se connecter à phpMyAdmin et se connecter à une base de données.
 function connexion_base_de_donnees(string $nom_bdd, string $nom_hote = "localhost", string $nom_utilisateur = "root", string $mot_de_passe = "") :?array {
@@ -63,6 +70,7 @@ function afficher_erreur(string $message){
 		echo("<div style='font-family:Arial Narrow;border-radius:4px;border:1px black solid;background-color:rgb(30,30,160);color:white;padding:3px;margin:3px;font-size:17px;width:30%;'><p style='margin:0 auto;'><b>INFO : </b>$message</p></div>");
 }
 
+detection_deconnexion();
 $array_connection = connexion_base_de_donnees("mmf_ver1");
 $resultat = lecture_utilisateurs($array_connection);
 
@@ -74,8 +82,12 @@ $resultat = lecture_utilisateurs($array_connection);
 	<a href="presentation.php"><p>Home Page</p></a>
 	<a href="articles.php"><p>Articles/Forum</p></a>
 	<a href="utilisateurs.php"><p>Users</p></a>
+	<?php if ($_SESSION["connected"] == "OUI"): ?>
+		<form method="POST" action="utilisateurs.php"><input type="submit" name="deconnection" value="Log off" id="log_off_button"/></form>
+	<?php else: ?>
 	<a href="enregistrement.php"><p>Register</p></a>
 	<a href="connexion.php"><p>Log in</p></a>
+	<?php endif; ?>
 </nav>
 
 <div id="liste_utilisateurs">
