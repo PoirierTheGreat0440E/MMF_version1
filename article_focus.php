@@ -61,10 +61,10 @@
 		$requete = "SELECT utilisateur_nom,utilisateur_photo_de_profile FROM mmf_ver1_utilisateurs WHERE utilisateur_id = ?";
 		$preparation = mysqli_prepare($connection_bdd[0],$requete);
 		if (!$preparation){
-			afficher_erreur("Préparation de la requête échouée.");
+			//afficher_erreur("Préparation de la requête échouée.");
 			return null;
 		} else {
-			afficher_remarque("Préparation de la requête réussie.");
+			//afficher_remarque("Préparation de la requête réussie.");
 			$ok0 = mysqli_stmt_bind_param($preparation,"i",$id);
 			//(!$ok0) ? afficher_erreur("Liaison des Paramètres échouée") : afficher_remarque("OK0");
 			$ok1 = mysqli_stmt_bind_result($preparation,$nom_lecture,$photo_lecture);
@@ -123,9 +123,9 @@
 	function afficher_commentaire($connection_bdd,$envoyeurId,$commentaireContenu){
 		$informations = informations_utilisateur($connection_bdd,$envoyeurId);
 		if ($informations[0] and $informations[1]){
-			echo("<article class='articles'>
-			<div><p>$informations[0]</p><img src=$informations[1] style='width:20%;'/></div>
-			<p>$commentaireContenu</p>
+			echo("<article class='commentaires'>
+			<div class='commentaire_info_utilisateur'><p>$informations[0]</p><img class='commentaire_pfp' src=$informations[1] style='width:80%;margin-bottom:5px;'/></div>
+			<p class='commentaire_contenu'>$commentaireContenu</p>
 			</article>");
 		} else {
 
@@ -147,12 +147,12 @@
 
 		
 	if ( isset($_GET["id"]) ){
-		afficher_remarque($_GET["id"]);
+		//afficher_remarque($_GET["id"]);
 		$lecture = lecture_article_focus($array_connection[0],$_GET["id"]);
 		$commentaires = lecture_commentaire($array_connection[0],$_GET["id"]);
 	} else {
 		if ( isset($_POST["id"]) ){
-			afficher_remarque($_POST["id"]);
+			//afficher_remarque($_POST["id"]);
 			$preparation2 = preparation_requete_insertion_commentaire($array_connection);
 			executer_requete_insertion_commentaire($preparation2,$_POST["commentaireContenu"],$_POST["id"],$_SESSION["user_id"]);
 			$lecture = lecture_article_focus($array_connection[0],$_POST["id"]);

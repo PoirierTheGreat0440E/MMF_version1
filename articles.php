@@ -84,7 +84,7 @@ function afficher_information_session(){
 
 		detection_deconnexion();
 
-		afficher_information_session();
+		//afficher_information_session();
 
 	?>
 
