@@ -17,6 +17,11 @@ function detection_deconnexion(){
 		//afficher_remarque($_POST["deconnexion_valeur"]);
 		$_SESSION["connected"] = "NON";
 		$_SESSION["user_id"] = 0;
+	} else {
+		if (!isset($_SESSION["connected"]) or empty($_SESSION["connected"])){
+			$_SESSION["connected"] = "NON";
+			$_SESSION["user_id"] = 0;
+		}
 	}
 }
 
