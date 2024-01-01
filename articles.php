@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html>
 
@@ -9,6 +10,18 @@
 	</head>
 
 	<?php
+
+function detection_deconnexion(){
+	if ( !empty($_POST["deconnexion_valeur"]) ){
+		//afficher_remarque($_POST["deconnexion_valeur"]);
+		$_SESSION["connected"] = "NON";
+	}
+}
+
+function afficher_information_session(){
+	afficher_remarque($_SESSION["user_id"]);
+	afficher_remarque($_SESSION["connected"]);
+}
 
 		// function pour se connecter à phpMyAdmin et se connecter à une base de données.
 		function connexion_base_de_donnees(string $nom_bdd, string $nom_hote = "localhost", string $nom_utilisateur = "root", string $mot_de_passe = "") :?array {
@@ -69,17 +82,25 @@
 		$array_connection = connexion_base_de_donnees("mmf_ver1");
 		$lecture = lecture_article($array_connection[0]);
 
+		detection_deconnexion();
+
+		afficher_information_session();
+
 	?>
 
 	<body>
 
-		<nav id="barreNavigation">
-			<a href="presentation.php"><p>Home Page</p></a>
-			<a href="articles.php"><p>Articles/Forum</p></a>
-			<a href="utilisateurs.php"><p>Users</p></a>
-			<a href="enregistrement.php"><p>Register</p></a>
-			<a href="connexion.php"><p>Log in</p></a>
-		</nav>	
+	<nav id="barreNavigation">
+	<a href="presentation.php"><p>Home Page</p></a>
+	<a href="articles.php"><p>Articles/Forum</p></a>
+	<a href="utilisateurs.php"><p>Users</p></a>
+	<?php if ($_SESSION["connected"] == "OUI"): ?>
+		<form method="POST" action="articles.php"><input type="hidden" name="deconnexion_valeur" value="ActivationDeconnection"/><input type="submit" name="deconnection" value="Log off" id="log_off_button"/></form>
+	<?php else: ?>
+	<a href="enregistrement.php"><p>Register</p></a>
+	<a href="connexion.php"><p>Log in</p></a>
+	<?php endif; ?>
+	</nav>
 
 		<div class="liste_articles">
 			
