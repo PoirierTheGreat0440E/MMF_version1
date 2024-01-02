@@ -11,10 +11,40 @@
 
 	<?php
 
+// Sous-fonction pour obtenir les informations d'un utilisateur à partir de son id.
+	function informations_utilisateur($connection_bdd,$id){
+		$requete = "SELECT utilisateur_nom,utilisateur_photo_de_profile FROM mmf_ver1_utilisateurs WHERE utilisateur_id = ?";
+		$preparation = mysqli_prepare($connection_bdd[0],$requete);
+		if (!$preparation){
+			//afficher_erreur("Préparation de la requête échouée.");
+			return null;
+		} else {
+			//afficher_remarque("Préparation de la requête réussie.");
+			$ok0 = mysqli_stmt_bind_param($preparation,"i",$id);
+			//(!$ok0) ? afficher_erreur("Liaison des Paramètres échouée") : afficher_remarque("OK0");
+			$ok1 = mysqli_stmt_bind_result($preparation,$nom_lecture,$photo_lecture);
+			//(!$ok1) ? afficher_erreur("Liaison des résultats échouée") : afficher_remarque("OK1");
+			$ok3 = mysqli_stmt_execute($preparation);
+			//(!$ok3) ? afficher_erreur("Execution de la requête échouée") : afficher_remarque("OK2");
+			$ok2 = mysqli_stmt_store_result($preparation);
+			//(!$ok2) ? afficher_erreur("Conservation des résultats échouée") : afficher_remarque("OK3");
+			while (mysqli_stmt_fetch($preparation)){
+				$informations = array($nom_lecture,$photo_lecture);
+				return $informations;
+			}
+		}
+	}
+
 function detection_deconnexion(){
 	if ( !empty($_POST["deconnexion_valeur"]) ){
 		//afficher_remarque($_POST["deconnexion_valeur"]);
 		$_SESSION["connected"] = "NON";
+		$_SESSION["user_id"] = 0;
+	} else {
+		if (!isset($_SESSION["connected"]) or empty($_SESSION["connected"])){
+			$_SESSION["connected"] = "NON";
+			$_SESSION["user_id"] = 0;
+		}
 	}
 }
 
@@ -79,6 +109,15 @@ function afficher_information_session(){
 				</div>");
 		}
 
+		function afficher_info_envoyeur_miniature($envoyeurNom = "?aucun_envoyeur?",$envoyeurPhotoDeProfile = "profile_pictures/no_sender.jpg",$dateEnvoi = "?aucune_date?"){
+			echo("
+				<div style='display:flex;flex-direction:row;width:90%;margin:0 4px;align-items:center;background-color:white;padding:4px;margin:0 auto;margin-bottom:4px;border-radius:5px;'>
+				<img style='width:4%;height:4%;border:2px black solid;border-radius:5px;' src='$envoyeurPhotoDeProfile'/><b style='margin-left:15px;'>$envoyeurNom</b>
+				<i style='margin-left:15px;'>$dateEnvoi</i>
+				</div>
+				");
+		}
+
 		$array_connection = connexion_base_de_donnees("mmf_ver1");
 		$lecture = lecture_article($array_connection[0]);
 
@@ -108,6 +147,7 @@ function afficher_information_session(){
 			//afficher_article("Quelque chose d'important vient de se dérouler.","uploads/wow.jpg","Aujourd'hui nous avons mangé énormément de nourritures.");
 		 	//afficher_article("Bonjour mdr","aaa","Prout Prout");
 		 	while ($curseur = mysqli_fetch_assoc($lecture)){
+		 		afficher_info_envoyeur_miniature();
 				afficher_article($curseur["article_titre"],$curseur["article_image"],$curseur["article_contenu"],$curseur["article_id"]);
 			}
 		 	?>

@@ -11,6 +11,21 @@
 
 <?php
 
+$article_focalise = null;
+
+function detection_deconnexion(){
+	if ( !empty($_POST["deconnexion_valeur"]) ){
+		//afficher_remarque($_POST["deconnexion_valeur"]);
+		$_SESSION["connected"] = "NON";
+		$_SESSION["user_id"] = 0;
+	} else {
+		if (!isset($_SESSION["connected"]) or empty($_SESSION["connected"])){
+			$_SESSION["connected"] = "NON";
+			$_SESSION["user_id"] = 0;
+		}
+	}
+}
+
 		function afficher_erreur(string $message){
 			echo("<div style='font-family:Arial Narrow;border-radius:4px;border:1px black solid;background-color:rgb(160,30,30);color:white;padding:3px;margin:3px;font-size:17px;width:30%;'><p style='margin:0 auto;'><b>ERREUR : </b>$message</p></div>");
 		}
@@ -147,22 +162,27 @@
 
 		
 	if ( isset($_GET["id"]) ){
+		$article_focalise = $_GET["id"];
 		//afficher_remarque($_GET["id"]);
 		$lecture = lecture_article_focus($array_connection[0],$_GET["id"]);
 		$commentaires = lecture_commentaire($array_connection[0],$_GET["id"]);
 	} else {
 		if ( isset($_POST["id"]) ){
+			$article_focalise = $_POST["id"];
 			//afficher_remarque($_POST["id"]);
 			$preparation2 = preparation_requete_insertion_commentaire($array_connection);
 			executer_requete_insertion_commentaire($preparation2,$_POST["commentaireContenu"],$_POST["id"],$_SESSION["user_id"]);
-			$lecture = lecture_article_focus($array_connection[0],$_POST["id"]);
-			$commentaires = lecture_commentaire($array_connection[0],$_POST["id"]);
+			header("Location: article_focus.php?id=$article_focalise", true, 303);
+			//$lecture = lecture_article_focus($array_connection[0],$_POST["id"]);
+			//$commentaires = lecture_commentaire($array_connection[0],$_POST["id"]);
 		} else {
 			echo("Aucune id détectée.");
 		}
 	}
 
 	informations_utilisateur($array_connection,2);
+
+	detection_deconnexion();
 
 ?>
 

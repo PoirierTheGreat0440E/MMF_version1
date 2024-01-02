@@ -11,6 +11,19 @@
 
 <?php
 
+function detection_deconnexion(){
+	if ( !empty($_POST["deconnexion_valeur"]) ){
+		//afficher_remarque($_POST["deconnexion_valeur"]);
+		$_SESSION["connected"] = "NON";
+		$_SESSION["user_id"] = 0;
+	} else {
+		if (!isset($_SESSION["connected"]) or empty($_SESSION["connected"])){
+			$_SESSION["connected"] = "NON";
+			$_SESSION["user_id"] = 0;
+		}
+	}
+}
+
 // function pour se connecter à phpMyAdmin et se connecter à une base de données.
 function connexion_base_de_donnees(string $nom_bdd, string $nom_hote = "localhost", string $nom_utilisateur = "root", string $mot_de_passe = "") :?array {
 	// On essaye d'abord de se connecter à phpMyAdmin...
@@ -163,6 +176,8 @@ if (isset($_POST["utilisateurNom"])){
 		//afficher_erreur("Les vérifications ne sont pas terminées.");
 	}
 }
+
+detection_deconnexion();
 
 ?>
 

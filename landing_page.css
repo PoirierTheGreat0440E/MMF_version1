@@ -1,5 +1,5 @@
 body{
-	background-image:url("stars.gif");
+	background-image:url("pattern2.gif");
 	background-repeat: repeat;
 }
 
@@ -24,6 +24,7 @@ a:visited{
 	color:white;
 	text-align: center;
 	margin-top:2vh;
+	text-shadow: 0 0 3px #FF0000;
 }
 
 #menu_navigation{
