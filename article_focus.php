@@ -158,6 +158,15 @@ function detection_deconnexion(){
 			</div>");
 	}
 
+	function afficher_info_envoyeur_miniature($envoyeurNom = "?aucun_envoyeur?",$envoyeurPhotoDeProfile = "profile_pictures/no_sender.jpg",$dateEnvoi = "?aucune_date?"){
+			echo("
+				<div style='display:flex;flex-direction:row;width:90%;margin:0 4px;align-items:center;background-color:white;padding:4px;margin:0 auto;margin-bottom:4px;border-radius:5px;'>
+				<img style='width:4%;height:4%;border:2px black solid;border-radius:5px;' src='$envoyeurPhotoDeProfile'/><b style='margin-left:15px;'>$envoyeurNom</b>
+				<i style='margin-left:15px;'>$dateEnvoi</i>
+				</div>
+				");
+	}
+
 	$array_connection = connexion_base_de_donnees("mmf_ver1");
 
 		
@@ -171,7 +180,7 @@ function detection_deconnexion(){
 			$article_focalise = $_POST["id"];
 			//afficher_remarque($_POST["id"]);
 			$preparation2 = preparation_requete_insertion_commentaire($array_connection);
-			executer_requete_insertion_commentaire($preparation2,$_POST["commentaireContenu"],$_POST["id"],$_SESSION["user_id"]);
+			executer_requete_insertion_commentaire($preparation2,htmlspecialchars($_POST["commentaireContenu"]),$_POST["id"],$_SESSION["user_id"]);
 			header("Location: article_focus.php?id=$article_focalise", true, 303);
 			//$lecture = lecture_article_focus($array_connection[0],$_POST["id"]);
 			//$commentaires = lecture_commentaire($array_connection[0],$_POST["id"]);
@@ -205,6 +214,8 @@ function detection_deconnexion(){
 	<?php
 
 		while($curseur = mysqli_fetch_assoc($lecture)){
+			$infos_envoyeur = informations_utilisateur($array_connection,$curseur["article_id_envoyeur"]);
+			afficher_info_envoyeur_miniature($infos_envoyeur[0],$infos_envoyeur[1],$curseur["article_date_envoi"]);
 			afficher_article_focus($curseur["article_titre"],$curseur["article_image"],$curseur["article_contenu"]);
 		}
 

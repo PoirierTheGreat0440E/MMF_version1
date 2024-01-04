@@ -70,3 +70,7 @@ a:visited{
     width:20%;
     text-align: center;
 }
+
+.article_post_button{
+    background-color:green;
+}

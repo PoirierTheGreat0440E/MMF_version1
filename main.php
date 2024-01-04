@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 
 <head>
@@ -33,6 +34,24 @@
 	// mysqli_stmt_fetch
 	// mysqli_stmt_close.
 
+function detection_deconnexion(){
+	if ( !empty($_POST["deconnexion_valeur"]) ){
+		//afficher_remarque($_POST["deconnexion_valeur"]);
+		$_SESSION["connected"] = "NON";
+		$_SESSION["user_id"] = 0;
+	} else {
+		if (!isset($_SESSION["connected"]) or empty($_SESSION["connected"])){
+			$_SESSION["connected"] = "NON";
+			$_SESSION["user_id"] = 0;
+		}
+	}
+}
+
+function afficher_information_session(){
+	afficher_remarque($_SESSION["user_id"]);
+	afficher_remarque($_SESSION["connected"]);
+}
+
 	// function pour se connecter à phpMyAdmin et se connecter à une base de données.
 	function connexion_base_de_donnees(string $nom_bdd, string $nom_hote = "localhost", string $nom_utilisateur = "root", string $mot_de_passe = "") :?array {
 		// On essaye d'abord de se connecter à phpMyAdmin...
@@ -57,7 +76,7 @@
 	}
 
 	function preparation_requete_insertion($connection_bdd){
-		$insertion = "INSERT INTO mmf_ver1_articles(article_titre,article_image,article_contenu) VALUES (?,?,?);";
+		$insertion = "INSERT INTO mmf_ver1_articles(article_titre,article_image,article_contenu,article_id_envoyeur,article_date_envoi) VALUES (?,?,?,?,?);";
 		$requete1 = mysqli_prepare($connection_bdd[0],$insertion);
 		if (!$requete1){
 			afficher_erreur("Preparation de la requête d'insertion échouée.");
@@ -68,8 +87,8 @@
 		return $requete1;
 	}
 
-	function executer_requete_insertion($preparation,$titre,$image,$contenu){
-		$test1 = mysqli_stmt_bind_param($preparation,"sss",$titre,$image,$contenu);
+	function executer_requete_insertion($preparation,$titre,$image,$contenu,$idEnvoi,$dateEnvoi){
+		$test1 = mysqli_stmt_bind_param($preparation,"sssis",$titre,$image,$contenu,$idEnvoi,$dateEnvoi);
 		if ( !$test1 ){
 			afficher_erreur("Liaison des paramètres échouée.");
 		} else {
@@ -136,13 +155,22 @@
 	if (isset($_POST["poster_article"])){
 		$validation = validation_article_saisi($_POST["articleTitre"],$_FILES["articleImage"],$_POST["articleContenu"]);
 		if ( $validation == 1 ){
-			executer_requete_insertion($preparation,$_POST["articleTitre"],"uploads/".$_FILES['articleImage']['name'],$_POST["articleContenu"]);
+			$date_envoi = date("d/m/Y à H:i:s");
+			executer_requete_insertion($preparation,htmlspecialchars($_POST["articleTitre"]),"uploads/".$_FILES['articleImage']['name'],htmlspecialchars($_POST["articleContenu"]),$_SESSION["user_id"],$date_envoi);
 			afficher_remarque("L'article a été posté !");
+			header("Location: articles.php", true, 303);
 		} else {
 			afficher_erreur("L'article n'est pas valide !");
 		}
 	}
 
+	detection_deconnexion();
+
+	afficher_information_session();
+
+	if (($_SESSION['user_id'] == 0) or ($_SESSION["connected"] == "NON")){
+		header("Location:articles.php");
+	}
 ?>
 
 <body>

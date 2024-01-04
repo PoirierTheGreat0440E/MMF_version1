@@ -109,6 +109,16 @@ function afficher_information_session(){
 				</div>");
 		}
 
+		function afficher_article_sans_image($titre,$contenu,$id){
+			echo("<div class='articles'>
+				<b style='font-size:20px;'>$titre</b><br/>
+				<div style='width:100%; background-color:black;display:flex;flex-direction:row;justify-content:center;'>
+				</div>
+				<a href='article_focus.php?id=$id'><p class='bouton_commentaire'>Commenter</p></a>
+				<p>$contenu</p>
+				</div>");
+		}
+
 		function afficher_info_envoyeur_miniature($envoyeurNom = "?aucun_envoyeur?",$envoyeurPhotoDeProfile = "profile_pictures/no_sender.jpg",$dateEnvoi = "?aucune_date?"){
 			echo("
 				<div style='display:flex;flex-direction:row;width:90%;margin:0 4px;align-items:center;background-color:white;padding:4px;margin:0 auto;margin-bottom:4px;border-radius:5px;'>
@@ -134,6 +144,7 @@ function afficher_information_session(){
 	<a href="articles.php"><p>Articles/Forum</p></a>
 	<a href="utilisateurs.php"><p>Users</p></a>
 	<?php if ($_SESSION["connected"] == "OUI"): ?>
+		<a href="main.php"><p>Post an article</p></a>
 		<form method="POST" action="articles.php"><input type="hidden" name="deconnexion_valeur" value="ActivationDeconnection"/><input type="submit" name="deconnection" value="Log off" id="log_off_button"/></form>
 	<?php else: ?>
 	<a href="enregistrement.php"><p>Register</p></a>
@@ -147,8 +158,13 @@ function afficher_information_session(){
 			//afficher_article("Quelque chose d'important vient de se dérouler.","uploads/wow.jpg","Aujourd'hui nous avons mangé énormément de nourritures.");
 		 	//afficher_article("Bonjour mdr","aaa","Prout Prout");
 		 	while ($curseur = mysqli_fetch_assoc($lecture)){
-		 		afficher_info_envoyeur_miniature();
-				afficher_article($curseur["article_titre"],$curseur["article_image"],$curseur["article_contenu"],$curseur["article_id"]);
+		 		$infos_envoyeur = informations_utilisateur($array_connection,$curseur["article_id_envoyeur"]);
+		 		afficher_info_envoyeur_miniature($infos_envoyeur[0],$infos_envoyeur[1],$curseur["article_date_envoi"]);
+		 		if ( trim($curseur["article_image"]) == "uploads/" ){
+		 			afficher_article_sans_image($curseur["article_titre"],$curseur["article_contenu"],$curseur["article_id"]);
+		 		} else {
+		 			afficher_article($curseur["article_titre"],$curseur["article_image"],$curseur["article_contenu"],$curseur["article_id"]);
+		 		}
 			}
 		 	?>
 

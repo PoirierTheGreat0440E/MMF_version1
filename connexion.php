@@ -126,6 +126,7 @@ if ( isset($_POST["connexionNomDUtilisateur"]) ){
 	$resultat = executer_requete_connexion($requete_connexion,$nom,$motdepasse);
 	if ( $resultat == 12 ){
 		//afficher_remarque("Tous s'est bien passé mdr.");
+		header("Location:articles.php");
 	}
 } else {
 	//afficher_remarque(" Donnez un nom d'utilisateur SVP ");
@@ -134,6 +135,7 @@ if ( isset($_POST["connexionNomDUtilisateur"]) ){
 detection_deconnexion();
 
 afficher_information_session();
+
 
 ?>
 
@@ -144,7 +146,7 @@ afficher_information_session();
 	<a href="articles.php"><p>Articles/Forum</p></a>
 	<a href="utilisateurs.php"><p>Users</p></a>
 	<?php if ($_SESSION["connected"] == "OUI"): ?>
-		<form method="POST" action="connexion.php"><input type="hidden" name="deconnexion_valeur" value="ActivationDeconnection"/><input type="submit" name="deconnection" value="Log off" id="log_off_button"/></form>
+		<form method="POST" action="connexion.php"><input type="hidden" name="deconnexion_valeur" value="ActivationDeconnection"/><input type="submit" name="deconnection" value="Log off" zid="log_off_button"/></form>
 	<?php else: ?>
 	<a href="enregistrement.php"><p>Register</p></a>
 	<a href="connexion.php"><p>Log in</p></a>
