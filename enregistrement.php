@@ -1,4 +1,4 @@
-<?php session_start(); ?>
+<?php session_start(); require_once("outils_communs.php"); ?>
 <!DOCTYPE html>
 <html>
 	
@@ -7,45 +7,10 @@
 	<meta charset="utf-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="enregistrement.css">
+	<link rel="stylesheet" href="style_navigation_et_barre.css">
 </head>
 
 <?php
-
-function detection_deconnexion(){
-	if ( !empty($_POST["deconnexion_valeur"]) ){
-		//afficher_remarque($_POST["deconnexion_valeur"]);
-		$_SESSION["connected"] = "NON";
-		$_SESSION["user_id"] = 0;
-	} else {
-		if (!isset($_SESSION["connected"]) or empty($_SESSION["connected"])){
-			$_SESSION["connected"] = "NON";
-			$_SESSION["user_id"] = 0;
-		}
-	}
-}
-
-// function pour se connecter à phpMyAdmin et se connecter à une base de données.
-function connexion_base_de_donnees(string $nom_bdd, string $nom_hote = "localhost", string $nom_utilisateur = "root", string $mot_de_passe = "") :?array {
-	// On essaye d'abord de se connecter à phpMyAdmin...
-	$etape1 = mysqli_connect($nom_hote,$nom_utilisateur,$mot_de_passe);
-	if ( $etape1 ){
-		//afficher_remarque("Connection à phpMyAdmin réussie.");
-	} else {
-		//afficher_erreur("Connection à phpMyAdmin échouée.");
-		return null;
-	}
-	// On essaye de rejoindre la base de données donnée en paramètre...
-	$etape2 = mysqli_select_db($etape1,$nom_bdd);
-	if ( $etape2 ){
-		//afficher_remarque("Accès à la base de données réussie.");
-	} else {
-		//afficher_erreur("Accès à la base de données échouée.");
-		return null;
-	}
-	// Si les deux étapes ont été réalisées avec succès, on crée un array contenant toutes les étapes.
-	//($etape1 and $etape2) ? return array($etape1,$etape2);
-	return array($etape1,$etape2);
-}
 
 
 // Courte sous-fonction pour déterminer l'égalité de deux mots de passe.
@@ -90,14 +55,6 @@ function preparation_requete_insertion($connection_bdd){
 		//afficher_remarque("Preparation de la requête d'insertion réussie.");
 	}
 	return $requete1;
-}
-
-function afficher_erreur(string $message){
-		echo("<div style='font-family:Arial Narrow;border-radius:4px;border:1px black solid;background-color:rgb(160,30,30);color:white;padding:3px;margin:3px;font-size:17px;width:30%;'><p style='margin:0 auto;'><b>ERREUR : </b>$message</p></div>");
-}
-
-	function afficher_remarque(string $message){
-		echo("<div style='font-family:Arial Narrow;border-radius:4px;border:1px black solid;background-color:rgb(30,30,160);color:white;padding:3px;margin:3px;font-size:17px;width:30%;'><p style='margin:0 auto;'><b>INFO : </b>$message</p></div>");
 }
 
 function validation_enregistrement($connection_bdd,$execution,$utilisateurNom,$utilisateurMotDePasse,$utilisateurMotDePasseConfirmation,$utilisateurPhotoDeProfile,$utilisateurDescription):bool{
@@ -183,13 +140,7 @@ detection_deconnexion();
 
 <body>
 
-	<nav id="Navigation">
-		<a href="presentation.php"><p>Home Page</p></a>
-		<a href="articles.php"><p>Articles/Forum</p></a>
-		<a href="utilisateurs.php"><p>Users</p></a>
-		<a href="enregistrement.php"><p>Register</p></a>
-		<a href="connexion.php"><p>Log in</p></a>
-	</nav>
+	<?php barre_navigation("enregistrement.php"); ?>
 
 	<form id="formulaire_inscription" action="enregistrement.php" method="POST" enctype="multipart/form-data">
 		<p>Nom d'utilisateur :</p>

@@ -1,0 +1,143 @@
+body{
+    background-image:url("background.png");
+}
+
+#navigation_bar1{
+    display:flex;
+    width:90%;
+    margin:0 auto;
+    background-color:rgb(0,0,0);
+    color:white;
+    justify-content: flex-start;
+    padding: 5px;
+}
+
+#navigation_bar1 img{
+    width:20%;
+    height:20%;
+}
+
+#navigation_bar1 a:link {
+    margin : 3px;
+    padding:15px;
+    width:10%;
+    text-align: center;
+    border:1px white solid;
+    text-decoration:none;
+    font-size:1vw;
+    text-transform:uppercase;
+    color:white;
+    margin-right:10px;
+    margin:auto;
+    font-family: Roboto;
+}
+
+#navigation_bar1 a:visited{
+    text-decoration:none;
+    font-size:30px;
+    color:white;
+}
+
+ #navigation_bar1 a:hover{
+    background-color:white;
+    color:black;
+ }
+
+ @font-face{
+    font-family:Roboto;
+    src : url("font_roboto/Roboto-Black.ttf");
+ }
+
+ #liste_articles1{
+    width:45%;
+    margin:0 auto;
+    height:100Px;
+ }
+
+ .post{
+    display:flex;
+    flex-direction: column;
+    width:80%;
+    margin:0 auto;
+    margin-top:10px;
+    background-color:white;
+    border:1px grey solid;
+    border-radius:15px;
+ }
+
+ .post_titre{
+    font-size:1.3vw;
+    font-family: Roboto;
+ }
+
+ .post_image{
+    width:100%;
+    background-color:black;
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+ }
+
+ .post_image img{
+    width:80%;
+    height:80%;
+ }
+
+ @font-face{
+    font-family:RobotoLight;
+    src:url("font_roboto/Roboto-Light.ttf");
+ }
+
+ .post p {
+    margin:4px;
+    font-family: RobotoLight;
+ }
+
+ .post b{
+    margin:4px;
+ }
+
+ .post_commenter:link{
+    width:20%;
+    text-align: center;
+    border-radius:4px;
+    background-color:rgb(30, 55, 153);
+    color:white;
+    text-decoration: none;
+ }
+
+ .post_commenter:hover{
+    width:20%;
+    text-align: center;
+    border-radius:4px;
+    background-color:rgb(12, 36, 97);
+    color:white;
+ }
+
+ .post_commenter:visited{
+    color:white;
+ }
+
+
+
+ .informations_utilisateurs_general{
+   display:flex;
+   flex-direction:row;
+   width:90%;
+   margin:0 4px;
+   align-items:center;
+   background-color:white;
+   padding:4px;
+   margin:0 auto;
+   margin-bottom:4px;
+   border-radius:5px;
+   margin-top:10px;
+   border:1px grey solid;
+ }
+
+ .informations_utilisateurs_miniature{
+   width:4%;
+   height:4%;
+   border:2px black solid;
+   border-radius:5px;
+ }

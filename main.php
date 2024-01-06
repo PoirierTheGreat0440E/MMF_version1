@@ -156,9 +156,9 @@ function afficher_information_session(){
 		$validation = validation_article_saisi($_POST["articleTitre"],$_FILES["articleImage"],$_POST["articleContenu"]);
 		if ( $validation == 1 ){
 			$date_envoi = date("d/m/Y à H:i:s");
-			executer_requete_insertion($preparation,htmlspecialchars($_POST["articleTitre"]),"uploads/".$_FILES['articleImage']['name'],htmlspecialchars($_POST["articleContenu"]),$_SESSION["user_id"],$date_envoi);
+			executer_requete_insertion($preparation,$_POST["articleTitre"],"uploads/".$_FILES['articleImage']['name'],nl2br($_POST["articleContenu"]),$_SESSION["user_id"],$date_envoi);
 			afficher_remarque("L'article a été posté !");
-			header("Location: articles.php", true, 303);
+			header("Location: articles.php");
 		} else {
 			afficher_erreur("L'article n'est pas valide !");
 		}
@@ -174,6 +174,19 @@ function afficher_information_session(){
 ?>
 
 <body>
+
+<nav id="barreNavigation">
+	<a href="index.php"><p>Home Page</p></a>
+	<a href="articles.php"><p>Articles/Forum</p></a>
+	<a href="utilisateurs.php"><p>Users</p></a>
+	<?php if ($_SESSION["connected"] == "OUI"): ?>
+		<a href="main.php"><p>Post an article</p></a>
+		<form method='POST' action='articles.php'><input type='hidden' name='deconnexion_valeur' value='ActivationDeconnection'/><input type='submit' name='deconnection' value='Log off' id='log_off_button'/></form>
+	<?php else: ?>
+	<a href="enregistrement.php"><p>Register</p></a>
+	<a href="connexion.php"><p>Log in</p></a>
+	<?php endif; ?>
+</nav>
 
 	<main>
 

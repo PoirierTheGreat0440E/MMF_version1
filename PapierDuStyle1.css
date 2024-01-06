@@ -1,3 +1,13 @@
+#barreNavigation{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    width:80%;
+    border:1px black dotted;
+    height:40px;
+    margin:0 auto;
+}
 
 .creationArticle{
     border:1px black solid;
