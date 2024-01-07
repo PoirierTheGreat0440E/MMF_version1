@@ -15,7 +15,8 @@
 	display:flex;
 	flex-direction: column;
 	align-items: center;
-	background-color:rgb(220,220,220);
+	background-color:gainsboro;
+	overflow:hidden;
 	width:20%;
 }
 
@@ -50,8 +51,38 @@
         background-color: gainsboro;
     }
 
+.utilisateur{
+	background-color:white;
+	width:100%;
+	display:flex;
+	flex-direction: column;
+	padding:5px;
+	font-family:Helvetica, "Trebuchet MS", Verdana, sans-serif;
+	margin:0 auto;
+	margin-bottom:10px;
+	border:1px grey solid;
+	border-radius:10px;
+}
+
+.utilisateur_photo_de_profil{
+	width: 20%;
+	margin:4px;
+	margin-top:5px;
+	border:2px black solid;
+}
+
+.utilisateur_profil{
+	display:flex;
+	flex-direction: row;
+	align-items: center;
+	background-color:gainsboro;
+	width:100%;
+	border-radius:5px;
+}
+
     .utilisateur_nom{
-		font-size:50%;
+		font-size:15px;
 	}
 
 }
+

@@ -72,7 +72,7 @@ $article_focalise = null;
 		$informations = informations_utilisateur($connection_bdd,$envoyeurId);
 		if ($informations[0] and $informations[1]){
 			echo("<article class='commentaires'>
-			<div class='commentaire_info_utilisateur'><p>$informations[0]</p><img class='commentaire_pfp' src=$informations[1] style='width:80%;margin-bottom:5px;'/></div>
+			<div class='commentaire_info_utilisateur'><img class='commentaire_pfp' src=$informations[1] class='commentaire_pfp'/><p>$informations[0]</p></div>
 			<p class='commentaire_contenu'>$commentaireContenu</p>
 			</article>");
 		} else {

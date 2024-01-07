@@ -39,7 +39,7 @@ a:visited{
 }
 
 #formulaire_inscription{
-	background-color:gainsboro;
+	background-color:white;
 	display:flex;
 	flex-direction:column;
 	margin:0 auto;
@@ -47,6 +47,7 @@ a:visited{
 	padding:5px;
 	border-radius:5px;
 	border:1px grey solid;
+	margin-top:10px;
 }
 
 #formulaire_inscription > input{
@@ -74,4 +75,35 @@ a:visited{
 #enregistrement_description{
 	resize:none;
 	height:190px;
+}
+
+
+
+
+
+
+
+
+@media screen and (max-width:800px){
+
+	#formulaire_inscription{
+		background-color:white;
+		display:flex;
+		flex-direction:column;
+		margin:0 auto;
+		width:90%;
+		padding:5px;
+		border-radius:5px;
+		border:1px grey solid;
+		margin-top:10px;
+	}
+
+	#bouton_enregistrement{
+		margin-top : 15px;
+		color:white;
+		background-color:rgb(30, 55, 153);
+		font-size:30px;
+	}
+	    
+
 }
